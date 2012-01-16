@@ -10,10 +10,9 @@ import XMonad.Hooks.ManageHelpers
 
 -- Workspace numbers
 
-data WorkspaceName = Web | IM
+data WorkspaceName = Web
 workspace :: WorkspaceName -> String
 workspace Web  = "2"
-workspace IM   = "8"
 
 manageFloat :: ManageHook
 manageFloat =
@@ -43,7 +42,6 @@ manageShift =
       rules  = [("Iceweasel"       , Web )
                ,("Uzbl-core"       , Web )
                ,("Chromium-browser", Web )
-               ,("Pidgin"          , IM)
                ]
 
 myManageHook :: ManageHook
