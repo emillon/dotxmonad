@@ -10,10 +10,9 @@ import XMonad.Hooks.ManageHelpers
 
 -- Workspace numbers
 
-data WorkspaceName = Web | Mail | IM
+data WorkspaceName = Web | IM
 workspace :: WorkspaceName -> String
 workspace Web  = "2"
-workspace Mail = "3"
 workspace IM   = "8"
 
 manageFloat :: ManageHook
@@ -44,8 +43,6 @@ manageShift =
       rules  = [("Iceweasel"       , Web )
                ,("Uzbl-core"       , Web )
                ,("Chromium-browser", Web )
-               ,("Icedove"         , Mail)
-               ,("Skype"           , Mail)
                ,("Pidgin"          , IM)
                ]
 
