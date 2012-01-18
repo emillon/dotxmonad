@@ -61,8 +61,8 @@ main = do
                 ,((mask, xK_twosuperior ), scratchpadSpawnAction conf)
                 ,((mask, xK_Left ), prevWS)
                 ,((mask, xK_Right ), nextWS)
-                ,((0   , xF86XK_AudioRaiseVolume), spawn "amixer -c 0 sset Master 2+")
-                ,((0   , xF86XK_AudioLowerVolume), spawn "amixer -c 0 sset Master 2-")
+                ,((0   , xF86XK_AudioRaiseVolume), volumeUp)
+                ,((0   , xF86XK_AudioLowerVolume), volumeDown)
 --              ,((0   , xF86XK_AudioMute)       , spawn "amixer -c 0 set  Master toggle")
                 ,((0   , xF86XK_AudioPlay)       , mpcToggle)
                 ,((0   , xF86XK_AudioPrev)       , mpcPrev)
@@ -94,10 +94,16 @@ mpcToggle = spawn "mpc toggle"
 mpcNext   = spawn "mpc next"
 mpcPrev   = spawn "mpc prev"
 
+volumeUp, volumeDown :: X ()
+volumeUp   = spawn "amixer -c 0 sset Master 2+"
+volumeDown = spawn "amixer -c 0 sset Master 2-"
+
 mpcMap :: M.Map (KeyMask, KeySym) (X ())
 mpcMap =
   M.fromList
     [ ((0, xK_t), mpcToggle)
     , ((0, xK_n), mpcNext)
     , ((0, xK_p), mpcPrev)
+    , ((0, xK_Up), volumeUp)
+    , ((0, xK_Down), volumeDown)
     ]
