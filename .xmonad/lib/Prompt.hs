@@ -16,14 +16,15 @@ myXPC :: XPConfig
 myXPC = amberXPConfig
 
 searchEngineMap :: (SearchEngine -> a) -> M.Map (KeyMask, KeySym) a
-searchEngineMap method = M.fromList
-                             [ ((0, xK_d), method duckduckgo)
-                             , ((0, xK_g), method googleSSL)
-                             , ((0, xK_h), method hoogle)
-                             , ((0, xK_w), method wikipedia)
-                             , ((0, xK_y), method youtube)
-                             , ((0, xK_r), method wordReference)
-                             ]
+searchEngineMap method =
+  M.fromList $ map (\ (k, m) -> ((0, k), method m)) $
+    [ (xK_d, duckduckgo)
+    , (xK_g, googleSSL)
+    , (xK_h, hoogle)
+    , (xK_w, wikipedia)
+    , (xK_y, youtube)
+    , (xK_r, wordReference)
+    ]
 
 googleSSL :: SearchEngine
 googleSSL = searchEngine "google" "https://www.google.com/search?num=100&q="
