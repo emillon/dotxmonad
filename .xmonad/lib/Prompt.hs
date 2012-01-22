@@ -24,6 +24,8 @@ searchEngineMap method =
     , (xK_w, wikipedia)
     , (xK_y, youtube)
     , (xK_r, wordReference)
+    , (xK_b, debbts)
+    , (xK_p, debpts)
     ]
 
 googleSSL :: SearchEngine
