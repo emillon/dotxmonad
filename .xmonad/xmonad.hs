@@ -70,7 +70,6 @@ main = do
                 ,((mask, xK_g), goToSelected defaultGSConfig)
                 ,((mask, xK_s), searchUsingMap)
                 ,((mask .|. shiftMask, xK_s), selectSearchUsingMap)
-                ,((mask .|. shiftMask, xK_b), browsePrompt myXPC)
                 ,((mask, xK_o), spawn $ myTerm ++ " -title Float-xterm")
                 ,((mask, xK_m), submap mpcMap)
                 ]

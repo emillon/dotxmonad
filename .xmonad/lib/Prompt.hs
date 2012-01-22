@@ -1,10 +1,6 @@
 {-# OPTIONS -Wall -W -Werror #-}
 
-module Prompt ( searchEngineMap
-              , myPromptSearch
-              , browsePrompt
-              , myXPC
-              , searchUsingMap
+module Prompt ( searchUsingMap
               , selectSearchUsingMap
               ) where
 
@@ -14,7 +10,6 @@ import XMonad
 import XMonad.Actions.Search
 import XMonad.Actions.Submap
 import XMonad.Prompt
-import XMonad.Prompt.Input
 import XMonad.Prompt.Shell
 
 myXPC :: XPConfig
@@ -47,14 +42,6 @@ myPromptSearch :: XPConfig -> SearchEngine -> X ()
 myPromptSearch xpc (SearchEngine name site) = do
   browser <- liftIO getBrowser
   mkXPrompt (SearchPrompt name) xpc (const $ return []) $ search browser site
-
-browseTo :: String -> X ()
-browseTo url = do
-  browser <- liftIO getBrowser
-  spawn $ browser ++ " " ++ url
-
-browsePrompt :: XPConfig -> X ()
-browsePrompt xpc = inputPrompt xpc "URL " ?+ browseTo
 
 searchUsingMap :: X ()
 searchUsingMap =
