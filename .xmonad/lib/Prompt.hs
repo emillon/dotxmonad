@@ -4,12 +4,15 @@ module Prompt ( searchEngineMap
               , myPromptSearch
               , browsePrompt
               , myXPC
+              , searchUsingMap
+              , selectSearchUsingMap
               ) where
 
 import qualified Data.Map as M
 
 import XMonad
 import XMonad.Actions.Search
+import XMonad.Actions.Submap
 import XMonad.Prompt
 import XMonad.Prompt.Input
 import XMonad.Prompt.Shell
@@ -52,3 +55,11 @@ browseTo url = do
 
 browsePrompt :: XPConfig -> X ()
 browsePrompt xpc = inputPrompt xpc "URL " ?+ browseTo
+
+searchUsingMap :: X ()
+searchUsingMap =
+  submap . searchEngineMap $ myPromptSearch myXPC
+
+selectSearchUsingMap :: X ()
+selectSearchUsingMap =
+  submap . searchEngineMap $ selectSearch
