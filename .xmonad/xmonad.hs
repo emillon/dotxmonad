@@ -67,6 +67,8 @@ main = do
                 ,((0   , xF86XK_AudioPlay)       , mpcToggle)
                 ,((0   , xF86XK_AudioPrev)       , mpcPrev)
                 ,((0   , xF86XK_AudioNext)       , mpcNext)
+                ,((mask, xK_Up), volumeUp)
+                ,((mask, xK_Down), volumeDown)
                 ,((mask, xK_g), goToSelected defaultGSConfig)
                 ,((mask, xK_s), searchUsingMap)
                 ,((mask .|. shiftMask, xK_s), selectSearchUsingMap)
@@ -104,6 +106,4 @@ mpcMap =
     [ ((0, xK_t), mpcToggle)
     , ((0, xK_n), mpcNext)
     , ((0, xK_p), mpcPrev)
-    , ((0, xK_Up), volumeUp)
-    , ((0, xK_Down), volumeDown)
     ]
