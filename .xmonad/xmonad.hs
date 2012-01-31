@@ -57,7 +57,7 @@ main = do
         mykeys conf = M.fromList $
                 [((mask, xK_b), sendMessage ToggleStruts)
                 ,((mask, xK_semicolon), sendMessage (IncMasterN (-1)))
-                ,((mask, xK_F12 ), spawn "xscreensaver-command -lock")
+                ,((mask, xK_F12 ), spawn "mpd --no status pause ; xscreensaver-command -lock")
                 ,((mask, xK_twosuperior ), scratchpadSpawnAction conf)
                 ,((mask, xK_Left ), prevWS)
                 ,((mask, xK_Right ), nextWS)
