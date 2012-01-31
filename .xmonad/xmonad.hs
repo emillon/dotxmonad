@@ -92,9 +92,9 @@ main = do
                     (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 mpcToggle, mpcNext, mpcPrev :: X ()
-mpcToggle = spawn "mpc toggle"
-mpcNext   = spawn "mpc next"
-mpcPrev   = spawn "mpc prev"
+mpcToggle = spawn "mpc --no-status toggle"
+mpcNext   = spawn "mpc --no-status next"
+mpcPrev   = spawn "mpc --no-status prev"
 
 volumeUp, volumeDown :: X ()
 volumeUp   = spawn "amixer -c 0 sset Master 2+"
