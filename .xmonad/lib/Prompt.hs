@@ -6,6 +6,8 @@ module Prompt ( searchUsingMap
 
 import qualified Data.Map as M
 
+import Data.Char
+
 import XMonad
 import XMonad.Actions.Search
 import XMonad.Actions.Submap
@@ -26,6 +28,7 @@ searchEngineMap method =
     , (xK_r, wordReference)
     , (xK_b, debbts)
     , (xK_p, debpts)
+    , (xK_o, ocaml)
     ]
 
 googleSSL :: SearchEngine
@@ -36,6 +39,16 @@ duckduckgo = searchEngine "ddg" "http://duckduckgo.com/?q="
 
 wordReference :: SearchEngine
 wordReference = searchEngine "wordreference" "http://wordreference.com/enfr/"
+
+ocaml :: SearchEngine
+ocaml =
+  searchEngineF "ocaml" (\s -> pfx ++ escape (ucFirst s) ++ ".html")
+    where
+      pfx = "file:///usr/share/doc/ocaml-doc/ocaml.html/libref/"
+
+ucFirst :: String -> String
+ucFirst [] = []
+ucFirst (x:xs) = toUpper x : xs
 
 data SearchPrompt = SearchPrompt String
 instance XPrompt SearchPrompt where
