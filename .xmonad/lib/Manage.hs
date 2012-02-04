@@ -29,10 +29,8 @@ manageFloat =
     ]
 
 isIdaTextPrompt :: Query Bool
-isIdaTextPrompt = do
-  t <- title
-  c <- className
-  return $ t == "Please enter text" && c == "Idaq"
+isIdaTextPrompt =
+  title =? "Please enter text" <&&> className =? "Idaq"
 
 manageShift :: ManageHook
 manageShift = 
