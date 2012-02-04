@@ -39,9 +39,9 @@ manageShift =
   composeOne (transience:shifts)
     where
       shifts = map (\ (c, wn) -> className =? c -?> doF (W.shift $ workspace wn)) rules
-      rules  = [("Iceweasel"       , Web )
-               ,("Uzbl-core"       , Web )
-               ,("Chromium-browser", Web )
+      rules  = [("Iceweasel", Web )
+               ,("Uzbl-core", Web )
+               ,("Chromium", Web )
                ]
 
 myManageHook :: ManageHook
