@@ -4,6 +4,7 @@ module Manage(myManageHook) where
 
 import qualified XMonad.StackSet as W
 
+import Data.Monoid
 import XMonad
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
@@ -44,8 +45,8 @@ manageShift =
 
 myManageHook :: ManageHook
 myManageHook =
-      manageFloat
-  <+> manageShift
-  <+> manageHook defaultConfig
-  <+> manageDocks
-
+  mconcat [ manageFloat
+          , manageShift
+          , manageHook defaultConfig
+          , manageDocks
+          ]
