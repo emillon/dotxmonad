@@ -29,6 +29,7 @@ searchEngineMap method =
     , (xK_b, debbts)
     , (xK_p, debpts)
     , (xK_o, ocaml)
+    , (xK_c, cpan)
     ]
 
 googleSSL :: SearchEngine
@@ -49,6 +50,9 @@ ocaml =
 ucFirst :: String -> String
 ucFirst [] = []
 ucFirst (x:xs) = toUpper x : xs
+
+cpan :: SearchEngine
+cpan = searchEngine "cpan" "http://search.cpan.org/search?query="
 
 data SearchPrompt = SearchPrompt String
 instance XPrompt SearchPrompt where
