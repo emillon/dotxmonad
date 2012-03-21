@@ -43,7 +43,7 @@ fuzzy tod =
     where
       h = todHour tod
       m = todMin tod
-      closeHour = if m > 30 then h + 1 else h
+      closeHour = if m >= 35 then h + 1 else h
 
 fuzzyClock :: X (Maybe String)
 fuzzyClock =
