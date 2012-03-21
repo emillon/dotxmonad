@@ -10,6 +10,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Util.Font
 import XMonad.Util.Loggers
 
+import Clock
 import Utils
 
 icon :: String -> String
@@ -37,7 +38,7 @@ myLogHook h = do
                             , ppTitle   = const ""
                             , ppExtras  = [ fixedWidthL AlignLeft " " 15 logLayout
                                           , fixedWidthL AlignLeft " " 50 logTitle
-                                          , withIcon "clock" $ logCmd "fzclock"
+                                          , withIcon "clock" fuzzyClock
                                           , volume
                                           , withIcon "bat_full_02" battery
                                           , withIcon "mail" $ maildirNew $ home ++ "/Maildir/Inbox"
