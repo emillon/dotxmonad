@@ -43,7 +43,7 @@ fuzzy :: TimeOfDay -> String
 fuzzy (TimeOfDay h0 m _) =
   unwords $ [say h] ++ hours h ++ [hourSuffix m]
     where
-      h = if m >= 35 then h0 + 1 else h0
+      h = if m >= 35 then (h0 + 1) `mod` 24 else h0
 
 fuzzyClock :: X (Maybe String)
 fuzzyClock =
@@ -61,4 +61,5 @@ fzcTest =
               , ((12,  0), "Midi pile")
               , (( 0,  5), "Minuit cinq")
               , (( 2, 45), "Trois heures moins le quart")
+              , ((23, 40), "Minuit moins vingt")
               ]
