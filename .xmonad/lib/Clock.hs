@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -W -Werror #-}
 
-module Clock(fuzzyClock) where
+module Clock(fuzzyClock, fzcTest) where
 
 import Control.Applicative
 import Data.Time.Clock
@@ -22,10 +22,12 @@ hourSuffix h | h <  5 = "pile"
              | h < 55 = "moins dix"
 hourSuffix _          = "moins cinq"
 
-hours :: Int -> String
-hours 0 = "heure"
-hours 1 = "heure"
-hours _ = "heures"
+hours :: Int -> [String]
+hours 1 = ["heure"]
+hours 13 = ["heure"]
+hours 12 = []
+hours 0 = []
+hours _ = ["heures"]
 
 say :: Int -> String
 say 0 = "Minuit"
@@ -38,12 +40,10 @@ say n  = cycle wordList !! n
                ]
 
 fuzzy :: TimeOfDay -> String
-fuzzy tod =
-  say closeHour ++ " " ++ hours h ++ " " ++ hourSuffix m
+fuzzy (TimeOfDay h0 m _) =
+  unwords $ [say h] ++ hours h ++ [hourSuffix m]
     where
-      h = todHour tod
-      m = todMin tod
-      closeHour = if m >= 35 then h + 1 else h
+      h = if m >= 35 then h0 + 1 else h0
 
 fuzzyClock :: X (Maybe String)
 fuzzyClock =
@@ -51,3 +51,14 @@ fuzzyClock =
     where
       getTime = utcToLocalTime <$> getCurrentTimeZone <*> getCurrentTime
 
+fzcTest :: Bool
+fzcTest =
+  all ok tests
+    where
+      ok ((h, m), s) = fuzzy (TimeOfDay h m 0) == s
+      tests = [ (( 3, 14), "Trois heures dix")
+              , ((13,  0), "Une heure pile")
+              , ((12,  0), "Midi pile")
+              , (( 0,  5), "Minuit cinq")
+              , (( 2, 45), "Trois heures moins le quart")
+              ]
