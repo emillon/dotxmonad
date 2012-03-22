@@ -1,0 +1,2 @@
+#!/bin/bash
+ghci -Wall "-i$HOME/.xmonad/lib" "$HOME/.xmonad/xmonad.hs"
