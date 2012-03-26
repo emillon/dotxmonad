@@ -74,6 +74,7 @@ main = do
                 ,((mask .|. shiftMask, xK_s), selectSearchUsingMap)
                 ,((mask, xK_o), spawn $ myTerm ++ " -title Float-xterm")
                 ,((mask, xK_m), submap mpcMap)
+                ,((mask .|. shiftMask, xK_Tab), swapNextScreen)
                 ]
                 ++
                 [((m .|. mask, k), windows $ f i)
