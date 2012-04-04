@@ -30,6 +30,7 @@ searchEngineMap method =
     , (xK_p, debpts)
     , (xK_o, ocaml)
     , (xK_c, cpan)
+    , (xK_a, alpha)
     ]
 
 googleSSL :: SearchEngine
