@@ -35,8 +35,6 @@ main = do
                       , logHook            = myLogHook hd
                       , layoutHook         = myLayoutHook
                       , workspaces         = map show ([1..8] :: [Int])
---                    , focusedBorderColor = "#729fcf"
---                    , focusedBorderColor = "#aa0000"
                       , focusedBorderColor = "#c02777"
                       , normalBorderColor  = "#aaaaaa"
                       , modMask            = mask
@@ -44,7 +42,6 @@ main = do
                       , borderWidth        = 2
                       }
         mask = mod4Mask 
-        {-myTerm = "urxvt -tn rxvt-256color"-}
         myTerm = "uxterm -tn xterm-256color"
 
         pipeCmdDzen = "dzen2 -xs 1 -bg black -h 16 -fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
@@ -58,7 +55,6 @@ main = do
                 ,((mask, xK_Right ), nextWS)
                 ,((0   , xF86XK_AudioRaiseVolume), volumeUp)
                 ,((0   , xF86XK_AudioLowerVolume), volumeDown)
---              ,((0   , xF86XK_AudioMute)       , spawn "amixer -c 0 set  Master toggle")
                 ,((0   , xF86XK_AudioPlay)       , mpcToggle)
                 ,((0   , xF86XK_AudioPrev)       , mpcPrev)
                 ,((0   , xF86XK_AudioNext)       , mpcNext)
