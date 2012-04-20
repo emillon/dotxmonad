@@ -21,11 +21,6 @@ import Layout
 import Manage
 import Prompt
 
--- Startup hook
-
-myStartupHook :: X ()
-myStartupHook = setWMName "LG3D"
-
 -- Conf
 
 main :: IO ()
@@ -36,7 +31,7 @@ main = do
         myConf hd = defaultConfig
                       { keys               = \c -> mykeys c `M.union` keys defaultConfig c
                       , manageHook         = myManageHook
-                      , startupHook        = myStartupHook
+                      , startupHook        = setWMName "LG3D"
                       , logHook            = myLogHook hd
                       , layoutHook         = myLayoutHook
                       , workspaces         = map show ([1..8] :: [Int])
