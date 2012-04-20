@@ -61,6 +61,8 @@ main = do
                 ,((mask, xK_twosuperior ), scratchpadSpawnAction conf)
                 ,((mask, xK_Left ), prevWS)
                 ,((mask, xK_Right ), nextWS)
+                ,((mask .|. shiftMask, xK_Left), shiftToPrev)
+                ,((mask .|. shiftMask, xK_Right), shiftToNext)
                 ,((0   , xF86XK_AudioRaiseVolume), volumeUp)
                 ,((0   , xF86XK_AudioLowerVolume), volumeDown)
 --              ,((0   , xF86XK_AudioMute)       , spawn "amixer -c 0 set  Master toggle")
