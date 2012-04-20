@@ -1,4 +1,4 @@
-{-# OPTIONS -Wall -W -Werror #-}
+{-# OPTIONS -Wall -W -Werror -fno-warn-missing-signatures #-}
 
 module Main(main) where
 
@@ -28,60 +28,77 @@ main = do
   hDzen <- spawnPipe pipeCmdDzen
   xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
     where
-        myConf hd = defaultConfig
-                      { keys               = \c -> mykeys c `M.union` keys defaultConfig c
-                      , manageHook         = myManageHook
-                      , startupHook        = setWMName "LG3D"
-                      , logHook            = myLogHook hd
-                      , layoutHook         = myLayoutHook
-                      , workspaces         = map show ([1..8] :: [Int])
-                      , focusedBorderColor = "#c02777"
-                      , normalBorderColor  = "#aaaaaa"
-                      , modMask            = mask
-                      , terminal           = myTerm
-                      , borderWidth        = 2
-                      }
-        mask = mod4Mask 
-        myTerm = "uxterm -tn xterm-256color"
-
         pipeCmdDzen = "dzen2 -xs 1 -bg black -h 16 -fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
 
-        mykeys conf = M.fromList $
-                [((mask, xK_b), sendMessage ToggleStruts)
-                ,((mask, xK_semicolon), sendMessage (IncMasterN (-1)))
-                ,((mask, xK_F12 ), spawn "mpc --no-status pause ; xscreensaver-command -lock")
-                ,((mask, xK_twosuperior ), scratchpadSpawnAction conf)
-                ,((mask, xK_Left ), prevWS)
-                ,((mask, xK_Right ), nextWS)
-                ,((0   , xF86XK_AudioRaiseVolume), volumeUp)
-                ,((0   , xF86XK_AudioLowerVolume), volumeDown)
-                ,((0   , xF86XK_AudioPlay)       , mpcToggle)
-                ,((0   , xF86XK_AudioPrev)       , mpcPrev)
-                ,((0   , xF86XK_AudioNext)       , mpcNext)
-                ,((mask, xK_Up), volumeUp)
-                ,((mask, xK_Down), volumeDown)
-                ,((mask, xK_g), goToSelected defaultGSConfig)
-                ,((mask, xK_s), searchUsingMap)
-                ,((mask .|. shiftMask, xK_s), selectSearchUsingMap)
-                ,((mask, xK_o), spawn $ myTerm ++ " -title Float-xterm")
-                ,((mask, xK_m), submap mpcMap)
-                ,((mask .|. shiftMask, xK_Tab), swapNextScreen)
-                ]
-                ++
-                [((m .|. mask, k), windows $ f i)
-                    | (i, k) <- zip (XMonad.workspaces conf)
-                           [ xK_ampersand   -- 1
-                           , xK_eacute      -- 2
-                           , xK_quotedbl    -- 3
-                           , xK_apostrophe  -- 4
-                           , xK_parenleft   -- 5
-                           , xK_minus       -- 6
-                           , xK_egrave      -- 7
-                           , xK_underscore  -- 8
-                           , xK_ccedilla    -- 9
-                           , xK_agrave      -- 0
-                           ],
-                    (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+myConf h =
+  XConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
+          , manageHook = myManageHook
+          , startupHook = setWMName "LG3D"
+          , logHook = myLogHook h
+          , layoutHook = myLayoutHook
+          , workspaces = map show ([1..8] :: [Int])
+          , focusedBorderColor = "#c02777"
+          , normalBorderColor = "#aaaaaa"
+          , modMask = mod4Mask 
+          , terminal = uxterm False
+          , borderWidth = 2
+          , handleEventHook = handleEventHook defaultConfig
+          , mouseBindings = mouseBindings defaultConfig
+          , focusFollowsMouse = True
+          }
+
+uxterm :: Bool -> String
+uxterm flt =
+  "uxterm -tn xterm-256color" ++ floatStr
+    where
+      floatStr = if flt then " -title Float-xterm" else ""
+
+data MaskType = No | M | MS
+
+toMask :: XConfig l -> MaskType -> KeyMask
+toMask _ No = 0
+toMask conf M = modMask conf
+toMask conf MS = modMask conf .|. shiftMask
+
+mykeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
+mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
+        [ (M , xK_b, sendMessage ToggleStruts)
+        , (M , xK_semicolon, sendMessage (IncMasterN (-1)))
+        , (M , xK_F12 , spawn "mpc --no-status pause ; xscreensaver-command -lock")
+        , (M , xK_twosuperior , scratchpadSpawnAction conf)
+        , (M , xK_Left , prevWS)
+        , (M , xK_Right , nextWS)
+        , (No, xF86XK_AudioRaiseVolume, volumeUp)
+        , (No, xF86XK_AudioLowerVolume, volumeDown)
+        , (No, xF86XK_AudioPlay       , mpcToggle)
+        , (No, xF86XK_AudioPrev       , mpcPrev)
+        , (No, xF86XK_AudioNext       , mpcNext)
+        , (M , xK_Up, volumeUp)
+        , (M , xK_Down, volumeDown)
+        , (M , xK_g, goToSelected defaultGSConfig)
+        , (M , xK_s, searchUsingMap)
+        , (MS, xK_s, selectSearchUsingMap)
+        , (M , xK_o, spawn $ uxterm True)
+        , (M , xK_m, submap mpcMap)
+        , (MS, xK_Tab, swapNextScreen)
+        ] ++ [ (m, k, windows $ f i)
+        | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
+        , (f, m) <- [(W.view, M), (W.shift, MS)]
+        ]
+
+azertyNumKeys :: [KeySym]
+azertyNumKeys =
+  [ xK_ampersand   -- 1
+  , xK_eacute      -- 2
+  , xK_quotedbl    -- 3
+  , xK_apostrophe  -- 4
+  , xK_parenleft   -- 5
+  , xK_minus       -- 6
+  , xK_egrave      -- 7
+  , xK_underscore  -- 8
+  , xK_ccedilla    -- 9
+  , xK_agrave      -- 0
+  ]
 
 mpcToggle, mpcNext, mpcPrev :: X ()
 mpcToggle = spawn "mpc --no-status toggle"
