@@ -100,10 +100,11 @@ azertyNumKeys =
   , xK_agrave      -- 0
   ]
 
-mpcToggle, mpcNext, mpcPrev :: X ()
+mpcToggle, mpcNext, mpcPrev, mpcStatus :: X ()
 mpcToggle = spawn "mpc --no-status toggle"
 mpcNext   = spawn "mpc --no-status next"
 mpcPrev   = spawn "mpc --no-status prev"
+mpcStatus = spawn "mpc | osd_cat -p middle -A right"
 
 volumeUp, volumeDown :: X ()
 volumeUp   = spawn "amixer -c 0 sset Master 2+"
@@ -115,4 +116,5 @@ mpcMap =
     [ ((0, xK_t), mpcToggle)
     , ((0, xK_n), mpcNext)
     , ((0, xK_p), mpcPrev)
+    , ((0, xK_s), mpcStatus)
     ]
