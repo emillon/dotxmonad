@@ -68,6 +68,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_twosuperior , scratchpadSpawnAction conf)
         , (M , xK_Left , prevWS)
         , (M , xK_Right , nextWS)
+        , (MS, xK_Left, shiftToPrev)
+        , (MS, xK_Right, shiftToNext)
         , (No, xF86XK_AudioRaiseVolume, volumeUp)
         , (No, xF86XK_AudioLowerVolume, volumeDown)
         , (No, xF86XK_AudioPlay       , mpcToggle)
