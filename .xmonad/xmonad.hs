@@ -7,6 +7,7 @@ import qualified Data.Map as M
 
 import Graphics.X11.ExtraTypes.XF86
 import XMonad
+import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.Submap
@@ -83,6 +84,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_o, spawn $ uxterm True)
         , (M , xK_m, submap mpcMap)
         , (MS, xK_Tab, swapNextScreen)
+        , (M , xK_v, windows copyToAll)
+        , (MS, xK_v, killAllOtherCopies)
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
