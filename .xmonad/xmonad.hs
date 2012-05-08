@@ -14,8 +14,10 @@ import XMonad.Actions.Submap
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
+import XMonad.Prompt.Shell
 import XMonad.Util.Run
 import XMonad.Util.Scratchpad
+import XMonad.Util.XSelection
 
 import Dzen
 import Layout
@@ -86,6 +88,7 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (MS, xK_Tab, swapNextScreen)
         , (M , xK_v, windows copyToAll)
         , (MS, xK_v, killAllOtherCopies)
+        , (MS, xK_u, browseToSelection)
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
@@ -127,3 +130,8 @@ mpcMap =
     , ((0, xK_Left), mpcBack)
     , ((0, xK_Right), mpcForward)
     ]
+
+browseToSelection :: X ()
+browseToSelection = do
+  browser <- liftIO $ getBrowser
+  safePromptSelection browser
