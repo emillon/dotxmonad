@@ -89,6 +89,7 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_v, windows copyToAll)
         , (MS, xK_v, killAllOtherCopies)
         , (MS, xK_u, browseToSelection)
+        , (No, xK_Print, spawn "sleep 0.2 ; scrot -s '/tmp/%Y-%m-%d.png'")
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
