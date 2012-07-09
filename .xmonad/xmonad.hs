@@ -109,13 +109,15 @@ azertyNumKeys =
   , xK_agrave      -- 0
   ]
 
-mpcToggle, mpcNext, mpcPrev, mpcStatus, mpcBack, mpcForward :: X ()
+mpcToggle, mpcNext, mpcPrev, mpcStatus :: X ()
 mpcToggle  = spawn "mpc --no-status toggle"
 mpcNext    = spawn "mpc --no-status next"
 mpcPrev    = spawn "mpc --no-status prev"
 mpcStatus  = spawn "mpc | osd_cat -p middle -A right"
-mpcBack    = spawn "mpc seek -00:10"
-mpcForward = spawn "mpc seek +00:10"
+
+mpcBack, mpcForward :: String -> X ()
+mpcBack    timeSpec = spawn $ "mpc seek -" ++ timeSpec
+mpcForward timeSpec = spawn $ "mpc seek +" ++ timeSpec
 
 volumeUp, volumeDown :: X ()
 volumeUp   = spawn "amixer -c 0 sset Master 2+"
@@ -128,9 +130,17 @@ mpcMap =
     , ((0, xK_n), mpcNext)
     , ((0, xK_p), mpcPrev)
     , ((0, xK_s), mpcStatus)
-    , ((0, xK_Left), mpcBack)
-    , ((0, xK_Right), mpcForward)
+    , ((0, xK_Left), mpcBack tenSec)
+    , ((0, xK_Right), mpcForward tenSec)
+    , ((0, xK_Down), mpcBack oneMin)
+    , ((0, xK_Up), mpcForward oneMin)
+    , ((0, xK_Page_Down), mpcBack tenMin)
+    , ((0, xK_Page_Up), mpcForward tenMin)
     ]
+      where
+        tenSec = "00:10"
+        oneMin = "01:00"
+        tenMin = "10:00"
 
 browseToSelection :: X ()
 browseToSelection = do
