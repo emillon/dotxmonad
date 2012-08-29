@@ -144,5 +144,5 @@ mpcMap =
 
 browseToSelection :: X ()
 browseToSelection = do
-  browser <- liftIO $ getBrowser
+  browser <- liftIO getBrowser
   safePromptSelection browser

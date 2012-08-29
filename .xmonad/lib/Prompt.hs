@@ -19,7 +19,7 @@ myXPC = amberXPConfig
 
 searchEngineMap :: (SearchEngine -> a) -> M.Map (KeyMask, KeySym) a
 searchEngineMap method =
-  M.fromList $ map (\ (k, m) -> ((0, k), method m)) $
+  M.fromList $ map (\ (k, m) -> ((0, k), method m))
     [ (xK_d, duckduckgo)
     , (xK_g, googleSSL)
     , (xK_h, hoogle)
