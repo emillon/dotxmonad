@@ -32,8 +32,7 @@ volume =
       chomp = takeWhile (/= '\n')
 
 myLogHook :: Handle -> X ()
-myLogHook h = do
-  home <- io getHomeDirectory
+myLogHook h =
   dynamicLogWithPP $ dzenPP { ppSep     = " | "
                             , ppTitle   = const ""
                             , ppExtras  = [ fixedWidthL AlignLeft " " 15 logLayout
@@ -41,7 +40,6 @@ myLogHook h = do
                                           , withIcon "clock" fuzzyClock
                                           , volume
                                           , withIcon "bat_full_02" battery
-                                          , withIcon "mail" $ maildirNew $ home ++ "/Maildir/Inbox"
                                           ]
                             , ppLayout  = const ""
                             , ppOutput  = hPutStrLn h
