@@ -80,7 +80,7 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (No, xF86XK_AudioNext       , mpcNext)
         , (M , xK_Up, volumeUp)
         , (M , xK_Down, volumeDown)
-        , (M , xK_g, goToSelected defaultGSConfig)
+        , (M , xK_g, goToSelected gsConfig)
         , (M , xK_s, searchUsingMap)
         , (MS, xK_s, selectSearchUsingMap)
         , (M , xK_o, spawn $ uxterm True)
@@ -90,6 +90,7 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (MS, xK_v, killAllOtherCopies)
         , (MS, xK_u, browseToSelection)
         , (No, xK_Print, spawn "sleep 0.2 ; scrot -s '/tmp/%Y-%m-%d.png'")
+        , (M , xK_r, spawnSelected gsConfig spawnableApps)
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
@@ -146,3 +147,12 @@ browseToSelection :: X ()
 browseToSelection = do
   browser <- liftIO getBrowser
   safePromptSelection browser
+
+gsConfig :: HasColorizer a => GSConfig a
+gsConfig = defaultGSConfig
+
+spawnableApps :: [String]
+spawnableApps =
+  [ "chromium"
+  , "emacs"
+  ]
