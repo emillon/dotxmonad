@@ -155,4 +155,5 @@ spawnableApps :: [String]
 spawnableApps =
   [ "chromium"
   , "emacs"
+  , "keepassx"
   ]
