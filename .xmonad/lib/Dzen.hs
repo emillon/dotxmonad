@@ -2,6 +2,7 @@
 
 module Dzen(myLogHook) where
 
+import Control.Monad
 import System.Directory
 import System.IO
 
@@ -16,13 +17,17 @@ import Utils
 icon :: String -> String
 icon path = "^i(" ++ path ++ ")"
 
+iconHomePath :: String -> String -> String
+iconHomePath h name =
+  icon $ h ++ "/.xmonad/icons/" ++ name ++ ".xbm"
+
 withIcon :: String -> Logger -> Logger
 withIcon iconName x = do
   xs <- x
   h  <- io getHomeDirectory
   return (prependIcon h <$> xs)
     where
-      prependIcon h s = icon (h ++ "/.icons/" ++ iconName ++ ".xbm") ++ " " ++ s
+      prependIcon h s = iconHomePath h iconName ++ " " ++ s
 
 volume :: Logger
 volume =
@@ -31,11 +36,24 @@ volume =
       chomp :: String -> String
       chomp = takeWhile (/= '\n')
 
+layoutIconName :: String -> Maybe String
+layoutIconName "ReflectX Tall" = Just "layout_rxtall"
+layoutIconName "Full"          = Just "layout_full"
+layoutIconName _ = Nothing
+
+prettyLayout :: Logger
+prettyLayout = do
+  ml <- logLayout
+  h <- io getHomeDirectory
+  return $ do
+    l <- ml
+    iconHomePath h <$> layoutIconName l `mplus` return l
+
 myLogHook :: Handle -> X ()
 myLogHook h =
   dynamicLogWithPP $ dzenPP { ppSep     = " | "
                             , ppTitle   = const ""
-                            , ppExtras  = [ fixedWidthL AlignLeft " " 15 logLayout
+                            , ppExtras  = [ prettyLayout
                                           , fixedWidthL AlignLeft " " 50 logTitle
                                           , withIcon "clock" fuzzyClock
                                           , volume
