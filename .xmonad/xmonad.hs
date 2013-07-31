@@ -32,6 +32,7 @@ main = do
   xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
     where
         pipeCmdDzen = unwords ["dzen2",
+                               "-e ''",
                                "-xs 1",
                                "-bg black",
                                "-h 16",
