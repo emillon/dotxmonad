@@ -31,7 +31,12 @@ main = do
   hDzen <- spawnPipe pipeCmdDzen
   xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
     where
-        pipeCmdDzen = "dzen2 -xs 1 -bg black -h 16 -fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
+        pipeCmdDzen = unwords ["dzen2",
+                               "-xs 1",
+                               "-bg black",
+                               "-h 16",
+                               "-fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
+                              ]
 
 myConf h =
   XConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
