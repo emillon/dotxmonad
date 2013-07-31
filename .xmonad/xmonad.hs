@@ -11,7 +11,6 @@ import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.Submap
-import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
@@ -30,7 +29,7 @@ import Prompt
 main :: IO ()
 main = do
   hDzen <- spawnPipe pipeCmdDzen
-  xmonad . withUrgencyHook NoUrgencyHook . ewmh $ myConf hDzen
+  xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
     where
         pipeCmdDzen = "dzen2 -xs 1 -bg black -h 16 -fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
 
