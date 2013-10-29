@@ -40,21 +40,20 @@ main = do
                               ]
 
 myConf h =
-  XConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
-          , manageHook = myManageHook
-          , startupHook = setWMName "LG3D"
-          , logHook = myLogHook h
-          , layoutHook = myLayoutHook
-          , workspaces = map show ([1..8] :: [Int])
-          , focusedBorderColor = "#c02777"
-          , normalBorderColor = "#aaaaaa"
-          , modMask = mod4Mask 
-          , terminal = uxterm False
-          , borderWidth = 2
-          , handleEventHook = handleEventHook defaultConfig
-          , mouseBindings = mouseBindings defaultConfig
-          , focusFollowsMouse = True
-          }
+  defaultConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
+                , manageHook = myManageHook
+                , startupHook = setWMName "LG3D"
+                , logHook = myLogHook h
+                , layoutHook = myLayoutHook
+                , workspaces = map show ([1..8] :: [Int])
+                , focusedBorderColor = "#c02777"
+                , normalBorderColor = "#aaaaaa"
+                , modMask = mod4Mask
+                , terminal = uxterm False
+                , borderWidth = 2
+                , handleEventHook = handleEventHook defaultConfig
+                , mouseBindings = mouseBindings defaultConfig
+                }
 
 uxterm :: Bool -> String
 uxterm flt =
