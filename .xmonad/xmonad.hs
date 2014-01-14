@@ -23,6 +23,7 @@ import Dzen
 import Layout
 import Manage
 import Prompt
+import Responsive
 
 -- Conf
 
@@ -96,6 +97,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (MS, xK_u, browseToSelection)
         , (No, xK_Print, spawn "sleep 0.2 ; scrot -s '/tmp/%Y-%m-%d.png'")
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
+        , (M , xK_d, responsiveMode)
+        , (MS, xK_d, responsiveModeSelect gsConfig)
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
