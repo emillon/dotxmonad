@@ -42,6 +42,7 @@ main = do
 
 myConf h =
   defaultConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
+                , mouseBindings = \c -> mymouse c `M.union` mouseBindings defaultConfig c
                 , manageHook = myManageHook
                 , startupHook = setWMName "LG3D"
                 , logHook = myLogHook h
@@ -53,7 +54,6 @@ myConf h =
                 , terminal = uxterm False
                 , borderWidth = 2
                 , handleEventHook = handleEventHook defaultConfig
-                , mouseBindings = mouseBindings defaultConfig
                 }
 
 uxterm :: Bool -> String
@@ -118,11 +118,18 @@ azertyNumKeys =
   , xK_agrave      -- 0
   ]
 
+mymouse :: XConfig l -> M.Map (ButtonMask, Button) (Window -> X ())
+mymouse c = M.singleton (toMask c M, button2) (const displayClipboard)
+
+osd :: String -> X ()
+osd cmd =
+    spawn $ cmd ++ " | osd_cat -p middle -A right"
+
 mpcToggle, mpcNext, mpcPrev, mpcStatus :: X ()
 mpcToggle  = spawn "mpc --no-status toggle"
 mpcNext    = spawn "mpc --no-status next"
 mpcPrev    = spawn "mpc --no-status prev"
-mpcStatus  = spawn "mpc | osd_cat -p middle -A right"
+mpcStatus  = osd "mpc"
 
 mpcBack, mpcForward :: String -> X ()
 mpcBack    timeSpec = spawn $ "mpc seek -" ++ timeSpec
@@ -165,3 +172,6 @@ spawnableApps =
   , "emacs"
   , "keepassx"
   ]
+
+displayClipboard :: X ()
+displayClipboard = osd "xclip -o"
