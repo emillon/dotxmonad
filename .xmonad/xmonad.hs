@@ -95,7 +95,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_v, windows copyToAll)
         , (MS, xK_v, killAllOtherCopies)
         , (MS, xK_u, browseToSelection)
-        , (No, xK_Print, spawn "sleep 0.2 ; scrot -s '/tmp/%Y-%m-%d.png'")
+        , (No, xK_Print, screenshot False)
+        , (M , xK_Print, screenshot True)
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
         , (M , xK_d, responsiveMode)
         , (MS, xK_d, responsiveModeSelect gsConfig)
@@ -175,3 +176,10 @@ spawnableApps =
 
 displayClipboard :: X ()
 displayClipboard = osd "xclip -o"
+
+screenshot :: Bool -> X ()
+screenshot selection =
+ spawn $ "sleep 0.2 ; scrot " ++ extraArgs selection ++ " '/tmp/%Y-%m-%d %H:%M:%S.png'"
+    where
+        extraArgs True = "-s "
+        extraArgs False = ""
