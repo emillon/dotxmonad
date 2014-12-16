@@ -27,6 +27,7 @@ manageFloat =
     , title     =? "Float-xterm"            --> doCenterFloat
     , className =? "xli"                    --> doFloat
     , isIdaTextPrompt --> doRectFloat (W.RationalRect 0.75 0.20 0.25 0.60)
+    , title =? "qiv" --> doFloat
     ]
 
 isIdaTextPrompt :: Query Bool
