@@ -32,7 +32,7 @@ manageFloat =
 
 isIdaTextPrompt :: Query Bool
 isIdaTextPrompt =
-  title =? "Please enter text" <&&> className =? "Idaq"
+  title =? "Please enter text" <&&> (className =? "Idaq" <||> className =? "Idaq64")
 
 manageShift :: ManageHook
 manageShift = 
