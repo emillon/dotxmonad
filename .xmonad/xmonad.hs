@@ -137,8 +137,8 @@ mpcBack    timeSpec = spawn $ "mpc seek -" ++ timeSpec
 mpcForward timeSpec = spawn $ "mpc seek +" ++ timeSpec
 
 volumeUp, volumeDown :: X ()
-volumeUp   = spawn "amixer -c 0 sset Master 2+"
-volumeDown = spawn "amixer -c 0 sset Master 2-"
+volumeUp   = spawn "pactl -- set-sink-volume 1 +2%"
+volumeDown = spawn "pactl -- set-sink-volume 1 -2%"
 
 mpcMap :: M.Map (KeyMask, KeySym) (X ())
 mpcMap =
