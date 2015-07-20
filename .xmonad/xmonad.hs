@@ -100,6 +100,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
         , (M , xK_d, responsiveMode)
         , (MS, xK_d, responsiveModeSelect gsConfig)
+        , (M , xK_h, sendMessage Expand)
+        , (M , xK_l, sendMessage Shrink)
         ] ++ [ (m, k, windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
         , (f, m) <- [(W.view, M), (W.shift, MS)]
