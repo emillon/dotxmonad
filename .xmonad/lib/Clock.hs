@@ -2,7 +2,6 @@
 
 module Clock(fuzzyClock, fzcTest) where
 
-import Control.Applicative
 import Data.Time.Clock
 import Data.Time.LocalTime
 
