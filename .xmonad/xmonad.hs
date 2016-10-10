@@ -41,20 +41,20 @@ main = do
                               ]
 
 myConf h =
-  defaultConfig { keys = \c -> mykeys c `M.union` keys defaultConfig c
-                , mouseBindings = \c -> mymouse c `M.union` mouseBindings defaultConfig c
-                , manageHook = myManageHook
-                , startupHook = setWMName "LG3D"
-                , logHook = myLogHook h
-                , layoutHook = myLayoutHook
-                , workspaces = map show ([1..8] :: [Int])
-                , focusedBorderColor = "#c02777"
-                , normalBorderColor = "#aaaaaa"
-                , modMask = mod4Mask
-                , terminal = uxterm False
-                , borderWidth = 2
-                , handleEventHook = handleEventHook defaultConfig
-                }
+  def { keys = \c -> mykeys c `M.union` keys def c
+      , mouseBindings = \c -> mymouse c `M.union` mouseBindings def c
+      , manageHook = myManageHook
+      , startupHook = setWMName "LG3D"
+      , logHook = myLogHook h
+      , layoutHook = myLayoutHook
+      , workspaces = map show ([1..8] :: [Int])
+      , focusedBorderColor = "#c02777"
+      , normalBorderColor = "#aaaaaa"
+      , modMask = mod4Mask
+      , terminal = uxterm False
+      , borderWidth = 2
+      , handleEventHook = handleEventHook def
+      }
 
 uxterm :: Bool -> String
 uxterm flt =
@@ -167,7 +167,7 @@ browseToSelection = do
   safePromptSelection browser
 
 gsConfig :: HasColorizer a => GSConfig a
-gsConfig = defaultGSConfig
+gsConfig = def
 
 spawnableApps :: [String]
 spawnableApps =

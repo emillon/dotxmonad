@@ -47,6 +47,6 @@ myManageHook :: ManageHook
 myManageHook =
   mconcat [ manageFloat
           , manageShift
-          , manageHook defaultConfig
+          , manageHook def
           , manageDocks
           ]
