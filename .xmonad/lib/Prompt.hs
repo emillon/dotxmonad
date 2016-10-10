@@ -37,9 +37,6 @@ searchEngineMap method =
 googleSSL :: SearchEngine
 googleSSL = searchEngine "google" "https://www.google.com/search?num=100&q="
 
-duckduckgo :: SearchEngine
-duckduckgo = searchEngine "ddg" "http://duckduckgo.com/?q="
-
 wordReference :: SearchEngine
 wordReference = searchEngine "wordreference" "http://wordreference.com/enfr/"
 
