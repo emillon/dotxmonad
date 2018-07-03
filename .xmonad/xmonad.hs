@@ -141,8 +141,8 @@ mpcBack    timeSpec = spawn $ "mpc seek -" ++ timeSpec
 mpcForward timeSpec = spawn $ "mpc seek +" ++ timeSpec
 
 volumeUp, volumeDown :: X ()
-volumeUp   = spawn "pactl -- set-sink-volume 1 +2%"
-volumeDown = spawn "pactl -- set-sink-volume 1 -2%"
+volumeUp   = spawn "pactl -- set-sink-volume 0 +2%"
+volumeDown = spawn "pactl -- set-sink-volume 0 -2%"
 
 mpcMap :: M.Map (KeyMask, KeySym) (X ())
 mpcMap =
