@@ -33,6 +33,7 @@ main = do
   xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
     where
         pipeCmdDzen = unwords ["dzen2",
+                               "-dock",
                                "-e ''",
                                "-xs 1",
                                "-bg black",
@@ -41,6 +42,7 @@ main = do
                               ]
 
 myConf h =
+  docks $
   def { keys = \c -> mykeys c `M.union` keys def c
       , mouseBindings = \c -> mymouse c `M.union` mouseBindings def c
       , manageHook = myManageHook
