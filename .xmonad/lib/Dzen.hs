@@ -10,14 +10,6 @@ import XMonad.Util.Font
 import XMonad.Util.Loggers
 
 import Clock
-import Utils
-
-volume :: Logger
-volume =
-  io . fmap (Just . chomp) $ readCmd "aumix -vq|perl -pe 's/vol (\\d+).*/$1/'"
-    where
-      chomp :: String -> String
-      chomp = takeWhile (/= '\n')
 
 myLogHook :: Handle -> X ()
 myLogHook h =
@@ -25,7 +17,6 @@ myLogHook h =
                             , ppTitle   = const ""
                             , ppExtras  = [ fixedWidthL AlignLeft " " 50 logTitle
                                           , fuzzyClock
-                                          , volume
                                           , battery
                                           ]
                             , ppLayout  = const ""
