@@ -34,11 +34,11 @@ main = do
     where
         pipeCmdDzen = unwords ["dzen2",
                                "-dock",
-                               "-e ''",
-                               "-xs 1",
-                               "-bg black",
-                               "-h 16",
-                               "-fn \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\""
+                               "-bg",
+                               "black",
+                               "-xs",
+                               "1",
+                               "-fn \"Fira Code:size=12\""
                               ]
 
 myConf h =
