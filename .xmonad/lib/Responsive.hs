@@ -15,6 +15,7 @@ data ResponsiveSize = RSExtraSmall
                     | RSSmall
                     | RSMedium
                     | RSLarge
+                    | RSFullHD
     deriving (Bounded, Eq, Enum, Show)
 
 respSize :: ResponsiveSize -> (Integer, Integer)
@@ -22,6 +23,7 @@ respSize RSExtraSmall = ( 460, 650)
 respSize RSSmall      = ( 780, 750)
 respSize RSMedium     = (1024, 800)
 respSize RSLarge      = (1250, 850)
+respSize RSFullHD     = (1280+4, 720+4)
 
 responsiveMode :: X ()
 responsiveMode =
