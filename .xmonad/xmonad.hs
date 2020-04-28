@@ -77,7 +77,7 @@ mykeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
 mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         [ (M , xK_b, sendMessage ToggleStruts)
         , (M , xK_semicolon, sendMessage (IncMasterN (-1)))
-        , (M , xK_F12 , spawn "mpc --no-status pause ; xscreensaver-command -lock")
+        , (M , xK_F12 , spawn "slock")
         , (M , xK_twosuperior , scratchpadSpawnAction conf)
         , (M , xK_Left , prevWS)
         , (M , xK_Right , nextWS)
