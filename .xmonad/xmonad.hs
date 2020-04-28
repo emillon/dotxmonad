@@ -59,10 +59,12 @@ myConf h =
       }
 
 uxterm :: Bool -> String
-uxterm flt =
-  "uxterm -tn xterm-256color" ++ floatStr
+uxterm _flt =
+  "kitty"
+  --"uxterm -tn xterm-256color" ++ floatStr
     where
-      floatStr = if flt then " -title Float-xterm" else ""
+   --   floatStr = if flt then " -title Float-xterm" else ""
+--       floatStr = if flt then " -T Float-xterm" else ""
 
 data MaskType = No | M | MS
 
