@@ -16,7 +16,8 @@ myLogHook h =
   dynamicLogWithPP $ dzenPP { ppSep     = " | "
                             , ppTitle   = const ""
                             , ppExtras  = [ fixedWidthL AlignLeft " " 50 logTitle
-                                          , fuzzyClock
+                                          , clock
+                                          , week
                                           , battery
                                           ]
                             , ppLayout  = const ""
