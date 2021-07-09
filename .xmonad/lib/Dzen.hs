@@ -2,13 +2,14 @@
 
 module Dzen(myLogHook) where
 
-import System.IO
+import System.IO (Handle, hPutStrLn)
 
-import XMonad.Core
-import XMonad.Hooks.DynamicLog
-import XMonad.Util.Font
-import XMonad.Util.Loggers
+import XMonad.Core(X)
+import XMonad.Hooks.DynamicLog (PP(..), dzenPP, dynamicLogWithPP)
+import XMonad.Util.Font (Align(..))
+import XMonad.Util.Loggers (fixedWidthL, logTitle)
 
+import Battery(battery)
 import Clock
 
 myLogHook :: Handle -> X ()
