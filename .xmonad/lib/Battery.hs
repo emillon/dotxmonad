@@ -29,11 +29,13 @@ data Status
   = Discharging
   | Charging
   | Unknown
+  | Full
 
 parseStatus :: String -> Either String Status
 parseStatus "Discharging" = return Discharging
 parseStatus "Charging" = return Charging
 parseStatus "Unknown" = return Unknown
+parseStatus "Full" = return Full
 parseStatus s = Left s
 
 logUnknown :: (a -> String) -> Either String a -> String
@@ -44,6 +46,7 @@ logStatus :: Status -> String
 logStatus Discharging = "-"
 logStatus Charging = "+"
 logStatus Unknown = "?"
+logStatus Full = ""
 
 data BatteryInfo =
   BatteryInfo
