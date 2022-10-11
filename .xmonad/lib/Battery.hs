@@ -28,12 +28,14 @@ xReadFile path = liftIO $ trim <$> readFile path
 data Status
   = Discharging
   | Charging
+  | NotCharging
   | Unknown
   | Full
 
 parseStatus :: String -> Either String Status
 parseStatus "Discharging" = return Discharging
 parseStatus "Charging" = return Charging
+parseStatus "Not charging" = return NotCharging
 parseStatus "Unknown" = return Unknown
 parseStatus "Full" = return Full
 parseStatus s = Left s
@@ -45,6 +47,7 @@ logUnknown _ (Left e) = "?(" ++ e ++ ")"
 logStatus :: Status -> String
 logStatus Discharging = "-"
 logStatus Charging = "+"
+logStatus NotCharging = "="
 logStatus Unknown = "?"
 logStatus Full = ""
 
