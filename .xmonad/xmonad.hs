@@ -11,11 +11,10 @@ import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.Submap
-import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.StatusBar
 import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt.Shell
-import XMonad.Util.Run
 import XMonad.Util.Scratchpad
 import XMonad.Util.XSelection
 
@@ -29,8 +28,8 @@ import Responsive
 
 main :: IO ()
 main = do
-  hDzen <- spawnPipe pipeCmdDzen
-  xmonad . withUrgencyHook NoUrgencyHook $ myConf hDzen
+  sb <- statusBarPipe pipeCmdDzen (pure myPP)
+  xmonad . withUrgencyHook NoUrgencyHook $ myConf sb
     where
         pipeCmdDzen = unwords ["dzen2",
                                "-dock",
@@ -41,13 +40,12 @@ main = do
                                "-fn \"Fira Code:size=12\""
                               ]
 
-myConf h =
-  docks $
+myConf sb =
+  withEasySB sb defToggleStrutsKey $
   def { keys = \c -> mykeys c `M.union` keys def c
       , mouseBindings = \c -> mymouse c `M.union` mouseBindings def c
       , manageHook = myManageHook
       , startupHook = setWMName "LG3D"
-      , logHook = myLogHook h
       , layoutHook = myLayoutHook
       , workspaces = map show ([1..8] :: [Int])
       , focusedBorderColor = "#c02777"
@@ -75,8 +73,7 @@ toMask conf MS = modMask conf .|. shiftMask
 
 mykeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
 mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
-        [ (M , xK_b, sendMessage ToggleStruts)
-        , (M , xK_semicolon, sendMessage (IncMasterN (-1)))
+        [ (M , xK_semicolon, sendMessage (IncMasterN (-1)))
         , (M , xK_F12 , spawn "slock")
         , (M , xK_twosuperior , scratchpadSpawnAction conf)
         , (M , xK_Left , prevWS)

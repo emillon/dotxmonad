@@ -1,26 +1,22 @@
 {-# OPTIONS -Wall -W -Werror #-}
 
-module Dzen(myLogHook) where
+module Dzen(myPP) where
 
-import System.IO (Handle, hPutStrLn)
-
-import XMonad.Core(X)
-import XMonad.Hooks.DynamicLog (PP(..), dzenPP, dynamicLogWithPP)
+import XMonad.Hooks.StatusBar.PP (PP(..), dzenPP)
 import XMonad.Util.Font (Align(..))
 import XMonad.Util.Loggers (fixedWidthL, logTitle)
 
 import Battery(battery)
-import Clock
+import Clock(clock, week)
 
-myLogHook :: Handle -> X ()
-myLogHook h =
-  dynamicLogWithPP $ dzenPP { ppSep     = " | "
-                            , ppTitle   = const ""
-                            , ppExtras  = [ fixedWidthL AlignLeft " " 50 logTitle
-                                          , clock
-                                          , week
-                                          , battery
-                                          ]
-                            , ppLayout  = const ""
-                            , ppOutput  = hPutStrLn h
-                            }
+myPP :: PP
+myPP =
+  dzenPP { ppSep     = " | "
+         , ppTitle   = const ""
+         , ppExtras  = [ fixedWidthL AlignLeft " " 50 logTitle
+                       , clock
+                       , week
+                       , battery
+                       ]
+         , ppLayout  = const ""
+         }

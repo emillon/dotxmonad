@@ -1,14 +1,12 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
 {-# OPTIONS -Wall -W -Werror -fno-warn-missing-signatures #-}
 
 module Layout (myLayoutHook) where
 
 import XMonad
-import XMonad.Hooks.ManageDocks
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Reflect
 
-myLayoutHook = smartBorders . avoidStruts $ myLayout
+myLayoutHook = smartBorders myLayout
 
 myLayout =
     reflectHoriz tiled ||| Full
