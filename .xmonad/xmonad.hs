@@ -2,7 +2,6 @@
 
 module Main(main) where
 
-import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 import Graphics.X11.ExtraTypes.XF86
@@ -105,24 +104,7 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (MS, xK_d, responsiveModeSelect gsConfig)
         , (M , xK_h, sendMessage Expand)
         , (M , xK_l, sendMessage Shrink)
-        ] ++ [ (m, k, windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) azertyNumKeys
-        , (f, m) <- [(W.view, M), (W.shift, MS)]
         ]
-
-azertyNumKeys :: [KeySym]
-azertyNumKeys =
-  [ xK_ampersand   -- 1
-  , xK_eacute      -- 2
-  , xK_quotedbl    -- 3
-  , xK_apostrophe  -- 4
-  , xK_parenleft   -- 5
-  , xK_minus       -- 6
-  , xK_egrave      -- 7
-  , xK_underscore  -- 8
-  , xK_ccedilla    -- 9
-  , xK_agrave      -- 0
-  ]
 
 mymouse :: XConfig l -> M.Map (ButtonMask, Button) (Window -> X ())
 mymouse c = M.singleton (toMask c M, button2) (const displayClipboard)
