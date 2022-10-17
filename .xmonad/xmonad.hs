@@ -52,18 +52,10 @@ myConf sb =
       , focusedBorderColor = "#c02777"
       , normalBorderColor = "#aaaaaa"
       , modMask = mod4Mask
-      , terminal = uxterm False
+      , terminal = "kitty"
       , borderWidth = 2
       , handleEventHook = handleEventHook def
       }
-
-uxterm :: Bool -> String
-uxterm _flt =
-  "kitty"
-  --"uxterm -tn xterm-256color" ++ floatStr
-    where
-   --   floatStr = if flt then " -title Float-xterm" else ""
---       floatStr = if flt then " -T Float-xterm" else ""
 
 data MaskType = No | M | MS
 
@@ -91,7 +83,6 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_g, goToSelected gsConfig)
         , (M , xK_s, searchUsingMap)
         , (MS, xK_s, selectSearchUsingMap)
-        , (M , xK_o, spawn $ uxterm True)
         , (M , xK_m, submap mpcMap)
         , (MS, xK_Tab, swapNextScreen)
         , (M , xK_v, windows copyToAll)
