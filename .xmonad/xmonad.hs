@@ -11,6 +11,7 @@ import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.Submap
+import XMonad.Hooks.Rescreen
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.UrgencyHook
@@ -42,6 +43,7 @@ main = do
 
 myConf sb =
   withEasySB sb defToggleStrutsKey $
+  addRandrChangeHook (spawn "autorandr --change") $
   def { keys = \c -> mykeys c `M.union` keys def c
       , mouseBindings = \c -> mymouse c `M.union` mouseBindings def c
       , manageHook = myManageHook
