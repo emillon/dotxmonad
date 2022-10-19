@@ -15,14 +15,13 @@ import XMonad.Hooks.SetWMName
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt.Shell
-import XMonad.Util.Scratchpad
+import XMonad.Util.EZConfig
 import XMonad.Util.XSelection
 
 import Dzen
 import Layout
 import Manage
 import Prompt
-import Responsive
 
 -- Conf
 
@@ -91,8 +90,6 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_Insert, screenshot False)
         , (MS, xK_Insert, screenshot True)
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
-        , (M , xK_d, responsiveMode)
-        , (MS, xK_d, responsiveModeSelect gsConfig)
         ]
 
 mymouse :: XConfig l -> M.Map (ButtonMask, Button) (Window -> X ())
