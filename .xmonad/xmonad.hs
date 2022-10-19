@@ -67,7 +67,7 @@ toMask conf MS = modMask conf .|. shiftMask
 mykeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
 mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         [ (M , xK_semicolon, sendMessage (IncMasterN (-1)))
-        , (M , xK_F12 , spawn "slock")
+        , (M , xK_l , spawn "slock")
         , (M , xK_twosuperior , scratchpadSpawnAction conf)
         , (M , xK_Left , prevWS)
         , (M , xK_Right , nextWS)
@@ -93,8 +93,6 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
         , (M , xK_d, responsiveMode)
         , (MS, xK_d, responsiveModeSelect gsConfig)
-        , (M , xK_h, sendMessage Expand)
-        , (M , xK_l, sendMessage Shrink)
         ]
 
 mymouse :: XConfig l -> M.Map (ButtonMask, Button) (Window -> X ())
