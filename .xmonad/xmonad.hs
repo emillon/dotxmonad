@@ -42,32 +42,32 @@ main = do
 myConf sb =
   withEasySB sb defToggleStrutsKey $
   addRandrChangeHook (spawn "autorandr --change") $
-  def { keys = \c -> mykeys c `M.union` keys def c
-      , mouseBindings = \c -> mymouse c `M.union` mouseBindings def c
-      , manageHook = myManageHook
+  (`additionalKeys` mykeys) $
+  (`additionalMouseBindings` mymouse) $
+  def { manageHook = myManageHook
       , startupHook = setWMName "LG3D"
       , layoutHook = myLayoutHook
       , workspaces = map show ([1..8] :: [Int])
       , focusedBorderColor = "#c02777"
       , normalBorderColor = "#aaaaaa"
-      , modMask = mod4Mask
+      , modMask = myModMask
       , terminal = "kitty"
       , borderWidth = 2
-      , handleEventHook = handleEventHook def
       }
 
 data MaskType = No | M | MS
 
-toMask :: XConfig l -> MaskType -> KeyMask
-toMask _ No = 0
-toMask conf M = modMask conf
-toMask conf MS = modMask conf .|. shiftMask
+toMask :: MaskType -> KeyMask
+toMask No = 0
+toMask M = myModMask
+toMask MS = myModMask .|. shiftMask
 
-mykeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
-mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
+myModMask = mod4Mask
+
+mykeys :: [((KeyMask, KeySym), X ())]
+mykeys = map ( \ (m, k, s) -> ((toMask m, k), s)) $
         [ (M , xK_semicolon, sendMessage (IncMasterN (-1)))
         , (M , xK_l , spawn "slock")
-        , (M , xK_twosuperior , scratchpadSpawnAction conf)
         , (M , xK_Left , prevWS)
         , (M , xK_Right , nextWS)
         , (MS, xK_Left, shiftToPrev)
@@ -92,8 +92,8 @@ mykeys conf = M.fromList $ map ( \ (m, k, s) -> ((toMask conf m, k), s)) $
         , (M , xK_r, spawnSelected gsConfig spawnableApps)
         ]
 
-mymouse :: XConfig l -> M.Map (ButtonMask, Button) (Window -> X ())
-mymouse c = M.singleton (toMask c M, button2) (const displayClipboard)
+mymouse :: [((ButtonMask, Button), (Window -> X ()))]
+mymouse = [((toMask M, button2), (const displayClipboard))]
 
 osd :: String -> X ()
 osd cmd =
