@@ -4,7 +4,6 @@ module Main(main) where
 
 import qualified Data.Map as M
 
-import Graphics.X11.ExtraTypes.XF86
 import XMonad
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
@@ -28,7 +27,7 @@ import Prompt
 main :: IO ()
 main = do
   sb <- statusBarPipe pipeCmdDzen (pure myPP)
-  xmonad . withUrgencyHook NoUrgencyHook $ myConf sb
+  xmonad . withUrgencyHook NoUrgencyHook . withEasySB sb defToggleStrutsKey $ myConf
     where
         pipeCmdDzen = unwords ["dzen2",
                                "-dock",
@@ -39,61 +38,48 @@ main = do
                                "-fn \"Fira Code:size=12\""
                               ]
 
-myConf sb =
-  withEasySB sb defToggleStrutsKey $
+myConf =
   addRandrChangeHook (spawn "autorandr --change") $
-  (`additionalKeys` mykeys) $
-  (`additionalMouseBindings` mymouse) $
+  (`additionalKeysP` myKeymap) $
   def { manageHook = myManageHook
-      , startupHook = setWMName "LG3D"
+      , startupHook = return () >> setWMName "LG3D" >> checkKeymap myConf myKeymap
       , layoutHook = myLayoutHook
       , workspaces = map show ([1..8] :: [Int])
       , focusedBorderColor = "#c02777"
       , normalBorderColor = "#aaaaaa"
-      , modMask = myModMask
+      , modMask = mod4Mask
       , terminal = "kitty"
       , borderWidth = 2
       }
 
-data MaskType = No | M | MS
 
-toMask :: MaskType -> KeyMask
-toMask No = 0
-toMask M = myModMask
-toMask MS = myModMask .|. shiftMask
-
-myModMask = mod4Mask
-
-mykeys :: [((KeyMask, KeySym), X ())]
-mykeys = map ( \ (m, k, s) -> ((toMask m, k), s)) $
-        [ (M , xK_semicolon, sendMessage (IncMasterN (-1)))
-        , (M , xK_l , spawn "slock")
-        , (M , xK_Left , prevWS)
-        , (M , xK_Right , nextWS)
-        , (MS, xK_Left, shiftToPrev)
-        , (MS, xK_Right, shiftToNext)
-        , (No, xF86XK_AudioRaiseVolume, volumeUp)
-        , (No, xF86XK_AudioLowerVolume, volumeDown)
-        , (No, xF86XK_AudioPlay       , mpcToggle)
-        , (No, xF86XK_AudioPrev       , mpcPrev)
-        , (No, xF86XK_AudioNext       , mpcNext)
-        , (M , xK_Up, volumeUp)
-        , (M , xK_Down, volumeDown)
-        , (M , xK_g, goToSelected gsConfig)
-        , (M , xK_s, searchUsingMap)
-        , (MS, xK_s, selectSearchUsingMap)
-        , (M , xK_m, submap mpcMap)
-        , (MS, xK_Tab, swapNextScreen)
-        , (M , xK_v, windows copyToAll)
-        , (MS, xK_v, killAllOtherCopies)
-        , (MS, xK_u, browseToSelection)
-        , (M , xK_Insert, screenshot False)
-        , (MS, xK_Insert, screenshot True)
-        , (M , xK_r, spawnSelected gsConfig spawnableApps)
-        ]
-
-mymouse :: [((ButtonMask, Button), (Window -> X ()))]
-mymouse = [((toMask M, button2), (const displayClipboard))]
+myKeymap :: [(String, X ())]
+myKeymap =
+  [ ("M-;", sendMessage (IncMasterN (-1)))
+  , ("M-l", spawn "slock")
+  , ("M-<Left>", prevWS)
+  , ("M-<Right>", nextWS)
+  , ("M-S-<Left>", shiftToPrev)
+  , ("M-S-<Right>", shiftToNext)
+  , ("<XF86AudioRaiseVolume>", volumeUp)
+  , ("<XF86AudioLowerVolume>", volumeDown)
+  , ("<XF86AudioPlay>", mpcToggle)
+  , ("<XF86AudioPrev>", mpcPrev)
+  , ("<XF86AudioNext>", mpcNext)
+  , ("M-<Up>", volumeUp)
+  , ("M-<Down>", volumeDown)
+  , ("M-g", goToSelected gsConfig)
+  , ("M-s", searchUsingMap)
+  , ("M-S-s", selectSearchUsingMap)
+  , ("M-m", submap mpcMap)
+  , ("M-S-<Tab>", swapNextScreen)
+  , ("M-v", windows copyToAll)
+  , ("M-S-v", killAllOtherCopies)
+  , ("M-S-u", browseToSelection)
+  , ("M-<Insert>", screenshot False)
+  , ("M-S-<Insert>", screenshot True)
+  , ("M-r", spawnSelected gsConfig spawnableApps)
+  ]
 
 osd :: String -> X ()
 osd cmd =
@@ -146,9 +132,6 @@ spawnableApps =
   , "emacs"
   , "keepassx"
   ]
-
-displayClipboard :: X ()
-displayClipboard = osd "xclip -o"
 
 screenshot :: Bool -> X ()
 screenshot selection =
